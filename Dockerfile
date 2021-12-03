@@ -48,11 +48,11 @@ ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:
  # Upgrading pip to the last compatible version	
  RUN pip3 install --upgrade pip	
  RUN pip3 install wheel pip -U &&\	
-	  pip3 install -r https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/master/scripts/requirements.txt && \	
-	  pip3 install -r https://raw.githubusercontent.com/zephyrproject-rtos/mcuboot/master/scripts/requirements.txt && \	
-	  pip3 install west &&\	
-	  pip3 install sh &&\	
-	  pip3 install awscli PyGithub junitparser pylint \	
+     pip3 install -r https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/master/scripts/requirements.txt &&\	
+     pip3 install -r https://raw.githubusercontent.com/zephyrproject-rtos/mcuboot/master/scripts/requirements.txt &&\	
+     pip3 install west &&\	
+     pip3 install sh &&\	
+     pip3 install awscli PyGithub junitparser pylint \	
 		     statistics numpy \	
 		     imgtool \	
 		     protobuf
