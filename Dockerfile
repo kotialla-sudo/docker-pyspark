@@ -45,6 +45,18 @@ ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:
  
  RUN wget -O get-pip.py "$PYTHON_GET_PIP_URL"; 	echo "$PYTHON_GET_PIP_SHA256 *get-pip.py" | sha256sum --check --strict -; 		python get-pip.py 		--disable-pip-version-check 		--no-cache-dir 		"pip==$PYTHON_PIP_VERSION" 	; 	pip --version; 		find /usr/local -depth 		\( 			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) 			-o 			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) 		\) -exec rm -rf '{}' +; 	rm -f get-pip.py
 
+ # Upgrading pip to the last compatible version	
+ RUN pip3 install --upgrade pip	
+ RUN pip3 install wheel pip -U &&\	
+	  pip3 install -r https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/master/scripts/requirements.txt && \	
+	  pip3 install -r https://raw.githubusercontent.com/zephyrproject-rtos/mcuboot/master/scripts/requirements.txt && \	
+	  pip3 install west &&\	
+	  pip3 install sh &&\	
+	  pip3 install awscli PyGithub junitparser pylint \	
+		     statistics numpy \	
+		     imgtool \	
+		     protobuf
+
 # HADOOP
 
 ENV HADOOP_VERSION 2.7.0
@@ -79,14 +91,14 @@ RUN ln -sf /bin/bash /bin/sh
 RUN ln -s /bin/sh /usr/local/bin/sh
 
 # user details
-ENV USER=spark
+ENV USER=user
 ENV UID=1000
 ENV GID=1000
 
 # create user
 RUN groupadd --gid $GID $USER
-RUN useradd --create-home --shell /bin/sh --uid $UID --gid $GID $USER
-RUN echo 'spark ALL=(ALL)   NOPASSWD:ALL' >> /etc/sudoers
+RUN useradd --create-home --shell /bin/bash --uid $UID --gid $GID $USER
+RUN echo 'user ALL=(ALL)   NOPASSWD:ALL' >> /etc/sudoers
 USER $USER
 WORKDIR /$SPARK_HOME
 RUN chmod 777 -R /$SPARK_HOME
