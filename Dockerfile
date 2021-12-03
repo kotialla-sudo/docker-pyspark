@@ -75,6 +75,7 @@ RUN wget https://archive.apache.org/dist/spark/spark-2.4.0/spark-2.4.0-bin-witho
     tar -xvzf spark-2.4.0-bin-without-hadoop.tgz && \
     mv $SPARK_PACKAGE $SPARK_HOME && \
     rm -rf $SPARK_HOME/examples $SPARK_HOME/ec2
+RUN pip install ipython
 
 ## install ripgrep
 RUN wget https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb \
@@ -94,6 +95,7 @@ RUN useradd --create-home --shell /bin/sh --uid $UID --gid $GID $USER
 RUN echo 'spark ALL=(ALL)   NOPASSWD:ALL' >> /etc/sudoers
 USER $USER
 WORKDIR /$SPARK_HOME
+RUN chmod 777 -R /$SPARK_HOME
 RUN /bin/bash -c "source /home/$USER/.bashrc"
 
 CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
